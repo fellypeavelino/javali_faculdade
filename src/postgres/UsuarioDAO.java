@@ -17,7 +17,9 @@ public class UsuarioDAO {
     public boolean logar(Usuario u) throws SQLException{
         Principal p = new Principal();
         p.con = p.conectar();
-        p.stm = p.con.prepareStatement("select count(nome) from usuario where nome='"+u.getNome()+"' and senha='"+u.getSenha()+"'");
+        p.stm = p.con.prepareStatement("select count(nome) from usuario where nome = ? and senha = ? ");
+        p.stm.setString(1, u.getNome());//'"+u.getNome()+"'
+        p.stm.setString(2, u.getSenha());//'"+u.getSenha()+"'
         ResultSet rs = p.stm.executeQuery();
         int rows = 0;
         while(rs.next()){
