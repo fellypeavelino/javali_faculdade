@@ -17,22 +17,48 @@ public class Lista extends javax.swing.JFrame {
     /**
      * Creates new form Lista
      */
+    ArrayList<Usuario> usuarios;
+    
     public Lista() {
-        try{
         initComponents();
-        Usuario usuario = new Usuario();
-        ArrayList<Usuario> usuarios = usuario.lista();
-        DefaultTableModel modeltable = new DefaultTableModel();
-        modeltable.setColumnIdentifiers(new String[]{"id","nome","senha"});
-        for(Usuario u : usuarios){
-            modeltable.addRow(new String[]{u.getId()+"",u.getNome(), u.getSenha()});
-        }
-        tabela.setModel(modeltable);
-        }catch(Exception ex){
-            JOptionPane.showMessageDialog(rootPane, ex.getMessage());
-        }
+        loop();
+        //chamarLista();
     }
 
+    public void chamarLista(){
+        try{ 
+            UsuarioDAO usuario = new UsuarioDAO();
+            usuarios = usuario.lista();
+            DefaultTableModel modeltable = new DefaultTableModel();
+            modeltable.setColumnIdentifiers(new String[]{"id","nome","senha"});
+            for(Usuario u : usuarios){
+                modeltable.addRow(new String[]{u.getId()+"",u.getNome(), u.getSenha()});
+            }
+            tabela.setModel(modeltable);
+        }catch(Exception ex){
+            JOptionPane.showMessageDialog(rootPane, ex.getMessage());
+        }   
+    }
+    
+    public void loop(){  
+        final int TIMEOUT = 10000;  
+        (new Thread(){  
+          public void run(){  
+           long fim =  System.currentTimeMillis();  
+           while (true){  
+            fim += TIMEOUT;  
+            try{  
+             Thread.sleep(fim - System.currentTimeMillis());  
+            }  
+            catch (Exception erro){
+                System.out.println("erro"+erro.getMessage()); 
+            }  
+                chamarLista();
+                System.out.println(fim); 
+           }  
+          }  
+        }).start();  
+     } 
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always

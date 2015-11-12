@@ -4,7 +4,9 @@
  */
 package postgres;
 
+import java.util.ArrayList;
 import javax.swing.JOptionPane;
+import javax.swing.table.DefaultTableModel;
 
 /**
  *
@@ -18,6 +20,18 @@ public class Projeto extends javax.swing.JFrame {
     public Projeto(Login l) {
         initComponents();
         l.dispose();
+        try{
+        UsuarioDAO usuario = new UsuarioDAO();
+        ArrayList<Usuario> usuarios = usuario.lista();
+        DefaultTableModel modeltable = new DefaultTableModel();
+        modeltable.setColumnIdentifiers(new String[]{"id","nome","senha"});
+        for(Usuario u : usuarios){
+            modeltable.addRow(new String[]{u.getId()+"",u.getNome(), u.getSenha()});
+        }
+        jTableListaMain.setModel(modeltable);
+        }catch(Exception ex){
+            JOptionPane.showMessageDialog(rootPane, ex.getMessage());
+        }
     }
 
     /**
@@ -30,6 +44,8 @@ public class Projeto extends javax.swing.JFrame {
     private void initComponents() {
 
         jPanel1 = new javax.swing.JPanel();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        jTableListaMain = new javax.swing.JTable();
         jMenuBar1 = new javax.swing.JMenuBar();
         jMenu1 = new javax.swing.JMenu();
         jMenuItem1 = new javax.swing.JMenuItem();
@@ -48,8 +64,26 @@ public class Projeto extends javax.swing.JFrame {
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 384, Short.MAX_VALUE)
+            .addGap(0, 0, Short.MAX_VALUE)
         );
+
+        jTableListaMain.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null}
+            },
+            new String [] {
+                "Title 1", "Title 2", "Title 3", "Title 4"
+            }
+        ));
+        jTableListaMain.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jTableListaMainMouseClicked(evt);
+            }
+        });
+        jScrollPane1.setViewportView(jTableListaMain);
 
         jMenu1.setText("Cadastro");
 
@@ -88,11 +122,16 @@ public class Projeto extends javax.swing.JFrame {
                 .addContainerGap()
                 .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addContainerGap())
+            .addGroup(layout.createSequentialGroup()
+                .addGap(36, 36, 36)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 395, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(38, 38, 38)
                 .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addContainerGap())
         );
@@ -112,6 +151,15 @@ public class Projeto extends javax.swing.JFrame {
         Lista lista = new Lista();
         lista.setVisible(true);
     }//GEN-LAST:event_jMenuItem2ActionPerformed
+
+    private void jTableListaMainMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTableListaMainMouseClicked
+        String nome = jTableListaMain.getValueAt(jTableListaMain.getSelectedRow(), 1).toString();
+        String senha = jTableListaMain.getValueAt(jTableListaMain.getSelectedRow(), 2).toString();
+        Usuario u = new Usuario(nome,senha);
+        Edicao ed = new Edicao(u);
+        ed.setVisible(true);       
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jTableListaMainMouseClicked
 
     /**
      * @param args the command line arguments
@@ -155,5 +203,7 @@ public class Projeto extends javax.swing.JFrame {
     private javax.swing.JMenuItem jMenuItem1;
     private javax.swing.JMenuItem jMenuItem2;
     private javax.swing.JPanel jPanel1;
+    private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JTable jTableListaMain;
     // End of variables declaration//GEN-END:variables
 }

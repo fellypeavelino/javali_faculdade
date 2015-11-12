@@ -131,11 +131,10 @@ public class Cadastro extends javax.swing.JFrame {
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         // TODO add your handling code here:
         try {
-            Usuario u = new Usuario();
-            u.setNome(cadastro_nome.getText());
-            u.setSenha(cadastro_senha.getText());
-            if(!u.logar(u)){
-                u.inserir(u);
+            Usuario u = new Usuario(cadastro_nome.getText(),cadastro_senha.getText());
+            UsuarioDAO ud = new UsuarioDAO();
+            if(!ud.logar(u)){
+                ud.inserir(u);
                 cadastro_nome.setText(null);
                 cadastro_senha.setText(null);
                 sucesso.setText("Cadastro realizado com sucesso");

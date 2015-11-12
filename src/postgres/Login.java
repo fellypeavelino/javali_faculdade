@@ -149,10 +149,9 @@ public class Login extends javax.swing.JFrame {
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         try{
-            Usuario u = new Usuario();
-            u.setNome(login.getText());
-            u.setSenha(senha.getText());
-            if(u.logar(u)){
+            Usuario u = new Usuario(login.getText(),senha.getText());
+            UsuarioDAO ud = new UsuarioDAO();
+            if(ud.logar(u)){
                 Projeto projeto = new Projeto(this);
                 projeto.setVisible(true);
             }else{
